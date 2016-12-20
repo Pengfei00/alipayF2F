@@ -17,7 +17,7 @@ __预创建订单__
 
 然后使用trade_pre_create就能生产一个二维码了
 
-alipay.trade_pre_create(
+`alipay.trade_pre_create(
         "123456789",   #商户订单号
 
         "10.00",       #订单总金额
