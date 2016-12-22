@@ -115,8 +115,8 @@ class alipay:
         check = eval(resp)
         resp = json.loads(resp)['alipay_trade_precreate_response']
         if self._check_sign(check['alipay_trade_precreate_response'], check['sign']):
-            return resp['qr_code'] or resp['msg']
-        return '非法数据'
+            return resp
+        return False
 
     def trade_refund(self, refund_amount, out_trade_no=None, trade_no=None,
                      refund_reason=None, out_request_no=None, operator_id=None, store_id=None,
@@ -146,4 +146,16 @@ class alipay:
         resp = json.loads(resp)['alipay_trade_refund_response']
         if self._check_sign(check['alipay_trade_refund_response'], check['sign']):
             return int(resp['code']) == 10000
+        return False
+
+    def trade_query(self, out_trade_no, trade_no=None, **kwargs):
+        params = copy.deepcopy(self.params)
+        params['method'] = 'alipay.trade.query'
+
+        biz_content = dict(out_trade_no=out_trade_no, trade_no=trade_no)
+        resp = self._make_request(params, dict(filter(lambda x: x[1] is not None, biz_content.items())), **kwargs)
+        check = eval(resp)
+        resp = json.loads(resp)['alipay_trade_query_response']
+        if self._check_sign(check['alipay_trade_query_response'], check['sign']) and resp['code'] == 10000:
+            return resp
         return False
