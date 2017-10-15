@@ -136,7 +136,7 @@ class alipay:
         """
         params = copy.deepcopy(self.params)
         params['method'] = 'alipay.trade.refund'
-        refund_amount = round(int(refund_amount), 2)
+        refund_amount = round(float(refund_amount), 2)
 
         biz_content = dict(refund_amount=refund_amount, out_trade_no=out_trade_no, trade_no=trade_no,
                            refund_reason=refund_reason, out_request_no=out_request_no, operator_id=operator_id,
